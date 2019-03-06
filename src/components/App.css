@@ -1,0 +1,24 @@
+.bg-yellow {
+  background-color: #f8e8d5;
+}
+
+.description {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.container h1 {
+  text-align: center;
+}
+
+.duration {
+  padding-bottom: 30px;
+}
+
+.duration__text {
+  padding-right: 20px;
+}
+
+.ReactPiano__Keyboard {
+  margin-bottom: 100px;
+}
