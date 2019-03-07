@@ -1,5 +1,5 @@
 import React from 'react';
-import { Piano, MidiNumbers } from 'react-piano';
+import { Piano } from 'react-piano';
 import classNames from 'classnames';
 
 import DimensionsProvider from './DimensionsProvider';
@@ -42,9 +42,10 @@ class PlaybackDemo extends React.Component {
     };
 
     render() {
+        const { offset } = this.props;
         const noteRange = {
-            first: MidiNumbers.fromNote('c3'),
-            last: MidiNumbers.fromNote('f5'),
+            first: 59 + offset * 12,
+            last: 84 + offset * 12,
         };
 
         return (

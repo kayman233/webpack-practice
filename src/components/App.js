@@ -5,7 +5,8 @@ import Select from 'arui-feather/select';
 
 import PlaybackDemo from './PlaybackDemo';
 import BasicPiano from './BasicPiano';
-import songs from '../configs/songs';
+import getSongs from '../configs/songs';
+import offsets from '../configs/offsets';
 import './App.css';
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -14,26 +15,26 @@ const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
 class App extends React.Component {
     state = {
         duration: 400,
-        currentSong: 'CMajor'
+        currentSong: 'CMajor',
+        offset: 0
+    };
+
+    handleOffsetChange = (offset) => {
+        this.setState({ offset: +offset[0] });
     };
 
     handleDurationChange = (duration) => {
-        this.setState({duration});
+        this.setState({ duration });
     };
 
     handleSongChange = (song) => {
-        console.log(song);
         this.setState({ currentSong: song[0] });
     };
 
     render() {
-        const songsToSelect = [{
-            value: 'CMajor',
-            text: 'До мажор'
-        },{
-            value: 'CMinor',
-            text: 'До минор'
-        }];
+        const { duration, currentSong, offset } = this.state;
+        const allSongs = getSongs(offset);
+        const songsToSelect = Object.keys(allSongs).map((key) => ({ value: key, text: allSongs[key].name }));
 
         return (
             <div>
@@ -42,36 +43,54 @@ class App extends React.Component {
                     <div className="row mt-5">
                         <div className="col-md-8 offset-md-2">
                             <p className="description">Сделано ради любимой и самой дорогой Сони</p>
-                            <div className="duration">
-                                <span className="duration__text">Длительность (мс): </span>
-                                <Input
-                                    placeholder='Введите длительность в мс'
-                                    value={this.state.duration}
-                                    onChange={this.handleDurationChange}
-                                    view='line'
-                                    size='s'
-                                    clear={ true }
-                                />
+
+                            <div className="settings">
+                                <div className="duration">
+                                    <span className="duration__text">Длительность (мс): </span>
+                                    <Input
+                                        placeholder='Введите длительность в мс'
+                                        value={ `${duration}` }
+                                        onChange={ this.handleDurationChange }
+                                        view='line'
+                                        size='s'
+                                        clear={ true }
+                                    />
+                                </div>
+                                <div className="settings__dropdown">
+                                    <div className="gamma">
+                                        <Select
+                                            label='Гамма'
+                                            mode='radio'
+                                            options={ songsToSelect }
+                                            onChange={ this.handleSongChange }
+                                            value={ [currentSong] }
+                                        />
+                                    </div>
+                                    <div className="offset">
+                                        <Select
+                                            width="available"
+                                            label='Сдвиг октавы'
+                                            mode='radio'
+                                            options={ offsets }
+                                            onChange={ this.handleOffsetChange }
+                                            value={ [`${offset}`] }
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <Select
-                                    label='Гамма'
-                                    mode='radio'
-                                    options={ songsToSelect }
-                                    onChange={this.handleSongChange}
-                                />
-                            </div>
+
                             <PlaybackDemo
-                                audioContext={audioContext}
-                                soundfontHostname={soundfontHostname}
-                                song={songs[this.state.currentSong]}
-                                duration={this.state.duration}
+                                audioContext={ audioContext }
+                                soundfontHostname={ soundfontHostname }
+                                song={ allSongs[currentSong].notes }
+                                duration={ duration }
+                                offset={ offset }
                             />
                         </div>
                     </div>
                     <div className="row mt-5">
                         <div className="col-md-8 offset-md-2 basic-piano">
-                            <BasicPiano />
+                            <BasicPiano offset={ offset } />
                         </div>
                     </div>
 

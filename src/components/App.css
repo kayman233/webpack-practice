@@ -11,8 +11,13 @@
   text-align: center;
 }
 
-.duration {
+.duration, .gamma, .offset {
   padding-bottom: 30px;
+}
+
+.offset {
+  width: 140px;
+  margin-left: 60px;
 }
 
 .duration__text {
@@ -21,4 +26,8 @@
 
 .ReactPiano__Keyboard {
   margin-bottom: 100px;
+}
+
+.settings__dropdown {
+  display: flex;
 }
