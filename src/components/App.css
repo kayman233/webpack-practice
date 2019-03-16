@@ -17,7 +17,11 @@
 
 .offset {
   width: 140px;
-  margin-left: 60px;
+  margin-left: 40px;
+}
+
+.exercise {
+  margin-left: 40px;
 }
 
 .duration__text {

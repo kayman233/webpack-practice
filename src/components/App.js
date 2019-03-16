@@ -5,17 +5,26 @@ import Select from 'arui-feather/select';
 
 import PlaybackDemo from './PlaybackDemo';
 import BasicPiano from './BasicPiano';
-import getSongs from '../configs/songs';
+import getGammas from '../configs/gammas';
+import exercises from '../configs/exercise';
 import offsets from '../configs/offsets';
 import './App.css';
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
 
+const mapSongsToRender = (songs) =>
+    Object.keys(songs).map((key) => ({
+        ...songs[key],
+        value: key,
+        text: songs[key].name,
+    }));
+
 class App extends React.Component {
     state = {
         duration: 400,
-        currentSong: 'CMajor',
+        currentGamma: 'CMajor',
+        currentExercise: 'gamma',
         offset: 0
     };
 
@@ -27,14 +36,18 @@ class App extends React.Component {
         this.setState({ duration });
     };
 
-    handleSongChange = (song) => {
-        this.setState({ currentSong: song[0] });
+    handleGammaChange = (gamma) => {
+        this.setState({ currentGamma: gamma[0] });
+    };
+
+    handleExerciseChange = (exercise) => {
+        console.log(exercise[0]);
+        this.setState({ currentExercise: exercise[0] });
     };
 
     render() {
-        const { duration, currentSong, offset } = this.state;
-        const allSongs = getSongs(offset);
-        const songsToSelect = Object.keys(allSongs).map((key) => ({ value: key, text: allSongs[key].name }));
+        const { duration, currentGamma, offset, currentExercise } = this.state;
+        const gammas = getGammas(offset);
 
         return (
             <div>
@@ -61,9 +74,18 @@ class App extends React.Component {
                                         <Select
                                             label='Гамма'
                                             mode='radio'
-                                            options={ songsToSelect }
-                                            onChange={ this.handleSongChange }
-                                            value={ [currentSong] }
+                                            options={ mapSongsToRender(gammas) }
+                                            onChange={ this.handleGammaChange }
+                                            value={ [currentGamma] }
+                                        />
+                                    </div>
+                                    <div className="exercise">
+                                        <Select
+                                            label='Упражнения'
+                                            mode='radio'
+                                            options={ mapSongsToRender(exercises) }
+                                            onChange={ this.handleExerciseChange }
+                                            value={ [currentExercise] }
                                         />
                                     </div>
                                     <div className="offset">
@@ -82,7 +104,7 @@ class App extends React.Component {
                             <PlaybackDemo
                                 audioContext={ audioContext }
                                 soundfontHostname={ soundfontHostname }
-                                song={ allSongs[currentSong].notes }
+                                song={ exercises[currentExercise].exercise(gammas[currentGamma].notes) }
                                 duration={ duration }
                                 offset={ offset }
                             />
