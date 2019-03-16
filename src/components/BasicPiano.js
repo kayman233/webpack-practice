@@ -12,8 +12,8 @@ class BasicPiano extends React.Component {
     render() {
         const { offset } = this.props;
         const noteRange = {
-            first: 59 + offset * 12,
-            last: 84 + offset * 12,
+            first: 41 + offset * 12,
+            last: 88 + offset * 12,
         };
 
         const keyboardShortcuts = KeyboardShortcuts.create({

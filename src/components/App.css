@@ -11,17 +11,20 @@
   text-align: center;
 }
 
-.duration, .gamma, .offset {
+.duration {
+  display: flex;
+  justify-content: center;
   padding-bottom: 30px;
+  width: 100%;
 }
 
-.offset {
-  width: 140px;
-  margin-left: 40px;
+.exercise, .delay {
+  margin: 0 40px;
 }
 
-.exercise {
-  margin-left: 40px;
+.gamma, .exercise, .offset,
+.delay, .direction, .interval {
+  width: 150px;
 }
 
 .duration__text {
@@ -32,6 +35,9 @@
   margin-bottom: 100px;
 }
 
-.settings__dropdown {
+.settings__main, .settings__additional--interval {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 30px;
 }

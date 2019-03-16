@@ -14,6 +14,30 @@ const getMainSteps = (notes) => {
     return wrapNotes(result);
 };
 
+const getDistance = (interval) => {
+    switch (interval) {
+        case 'i3+':
+            return 4;
+        case 'i3-':
+            return 3;
+        case 'i6+':
+            return 9;
+        case 'i6-':
+            return 8;
+        case 'i9+':
+            return 16;
+        case 'i9-':
+            return 15;
+        default:
+            return 0;
+    }
+};
+
+const getNoteByDistance = (note, distance, direction) =>
+    direction === 'up'
+        ? note + distance
+        : note - distance;
+
 export default {
     gamma: {
         name: 'Хроматическая гамма',
@@ -23,10 +47,21 @@ export default {
         }
     },
     interval: {
-        name: 'Интервал (Не готово)',
+        name: 'Интервал',
         id: 'interval',
-        exercise: (gamma) => {
-            return []
+        exercise: (gamma, { delay, direction, interval }) => {
+            const distance = getDistance(interval);
+            const result = [];
+            gamma.forEach(([note]) => {
+                if (delay === 'together') {
+                    result.push([note, getNoteByDistance(note, distance, direction)]);
+                } else {
+                    result.push([note]);
+                    result.push([getNoteByDistance(note, distance, direction)]);
+                }
+                result.push([]);
+            });
+            return wrapNotes(result);
         }
     },
     arpeggio: {
