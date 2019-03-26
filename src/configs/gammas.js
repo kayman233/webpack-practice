@@ -1,8 +1,17 @@
+import { MAX_NOTE } from './options';
+
 const generateGamma = (mainNote, diffs) => {
     const result = [[mainNote]];
-    diffs.forEach((v) => {
+    const diffsExpanded = [];
+    for (let i = 0; i < 4; ++i) {
+        diffsExpanded.push(...diffs);
+    }
+    diffsExpanded.forEach((v) => {
         const lastNote = result[result.length - 1][0];
-        result.push([lastNote + v]);
+        const newNote = lastNote + v;
+        if (newNote <= MAX_NOTE) {
+            result.push([newNote]);
+        }
     });
 
     return result;

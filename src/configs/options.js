@@ -33,3 +33,5 @@ export const intervals = [{
     value: 'i9-',
     text: 'Малая децима'
 }];
+
+export const MAX_NOTE = 108;

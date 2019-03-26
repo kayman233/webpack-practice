@@ -26,7 +26,7 @@ class App extends React.Component {
     state = {
         duration: 400,
         currentGamma: 'CMajor',
-        currentExercise: 'interval',
+        currentExercise: 'gamma',
         intervalSettings: {
             direction: directions[0].value,
             delay: delay[0].value,

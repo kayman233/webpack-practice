@@ -1,3 +1,5 @@
+import { MAX_NOTE } from './options';
+
 const wrapNotes = (notes) => {
     const arrUp = notes.slice();
     const arrDown = notes.reverse();
@@ -7,9 +9,12 @@ const wrapNotes = (notes) => {
 
 const getMainSteps = (notes) => {
     const result = [];
-    for (let offset = 0; offset < 2; ++offset) {
-        result.push([notes[0][0] + offset * 12], [notes[2][0] + offset * 12], [notes[4][0] + offset * 12]);
-    }
+
+    notes.forEach((note, index) => {
+        if (index % 7 === 0 || index % 7 === 2 || index % 7 === 4) {
+            result.push([note[0]])
+        }
+    });
 
     return wrapNotes(result);
 };
@@ -40,7 +45,7 @@ const getNoteByDistance = (note, distance, direction) =>
 
 export default {
     gamma: {
-        name: 'Хроматическая гамма',
+        name: 'Обычная гамма',
         id: 'gamma',
         exercise: (gamma) => {
             return wrapNotes(gamma);
@@ -53,13 +58,16 @@ export default {
             const distance = getDistance(interval);
             const result = [];
             gamma.forEach(([note]) => {
-                if (delay === 'together') {
-                    result.push([note, getNoteByDistance(note, distance, direction)]);
-                } else {
-                    result.push([note]);
-                    result.push([getNoteByDistance(note, distance, direction)]);
+                const newNote = getNoteByDistance(note, distance, direction);
+                if (newNote <= MAX_NOTE) {
+                    if (delay === 'together') {
+                        result.push([note, newNote]);
+                    } else {
+                        result.push([note]);
+                        result.push([newNote]);
+                    }
+                    result.push([]);
                 }
-                result.push([]);
             });
             return wrapNotes(result);
         }
