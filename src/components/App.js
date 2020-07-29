@@ -25,7 +25,7 @@ const mapSongsToRender = (songs) =>
 class App extends React.Component {
     state = {
         duration: 400,
-        currentGamma: 'CMajor',
+        currentGamma: 'EMinor',
         currentExercise: 'gamma',
         intervalSettings: {
             direction: directions[0].value,
@@ -78,7 +78,6 @@ class App extends React.Component {
     render() {
         const { duration, currentGamma, offset, currentExercise, intervalSettings } = this.state;
         const gammas = getGammas(offset);
-
         return (
             <div>
                 <div className="container">
@@ -134,7 +133,7 @@ class App extends React.Component {
                                     </div>
                                     <div className="settings__additional">
                                         {
-                                            currentExercise === 'interval' && (
+                                            (currentExercise === 'interval' || currentExercise === 'melodicInterval') && (
                                                 <div className="settings__additional--interval">
                                                     <div className="direction">
                                                         <Select

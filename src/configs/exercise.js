@@ -1,4 +1,5 @@
 import { MAX_NOTE } from './options';
+import { getMelodicGammas } from './gammas';
 
 const wrapNotes = (notes) => {
     const arrUp = notes.slice();
@@ -49,6 +50,37 @@ export default {
         id: 'gamma',
         exercise: (gamma) => {
             return wrapNotes(gamma);
+        }
+    },
+    melodicGamma: {
+        name: 'Мелодическая гамма',
+        id: 'melodicGamma',
+        exercise: (gamma, { gammaId, offset }) => {
+            return getMelodicGammas(offset)[gammaId].notes;
+        }
+    },
+    melodicInterval: {
+        name: 'Мелодический интервал',
+        id: 'melodicInterval',
+        exercise: (gamma, { gammaId, offset, delay, direction, interval }) => {
+            const melodicGamma = getMelodicGammas(offset)[gammaId].notes;
+            const distance = getDistance(interval);
+            const result = [];
+
+            melodicGamma.forEach(([note]) => {
+                const newNote = getNoteByDistance(note, distance, direction);
+                if (newNote <= MAX_NOTE) {
+                    if (delay === 'together') {
+                        result.push([note, newNote]);
+                    } else {
+                        result.push([note]);
+                        result.push([newNote]);
+                    }
+                    result.push([]);
+                }
+            });
+
+            return result;
         }
     },
     interval: {
