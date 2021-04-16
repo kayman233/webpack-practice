@@ -1,3 +1,19 @@
+## Сборка с помощью Webpack
+
+### `npm run web-dev`
+
+Для development сборки без каких-либо модификаций
+
+### `npm run web-build`
+
+Для production сборки с разделением библиотек и сокращением символов в файлах.
+
+### `npm run web-single`
+
+Для production сборки, в которой файл каждого типа единственный, а также с сокращением символов в файлах.
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
